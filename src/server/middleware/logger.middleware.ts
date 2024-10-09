@@ -2,13 +2,33 @@ import {
   createLogger as createWinstonLogger,
   format,
   transports,
+  addColors,
 } from "winston";
-import morgan from "morgan";
+import morgan, { FormatFn } from "morgan";
 import { IncomingMessage } from "node:http";
+
+const levels = {
+  error: 0,
+  warn: 1,
+  info: 2,
+  http: 3,
+  debug: 4,
+};
+
+const colors = {
+  error: "red",
+  warn: "yellow",
+  info: "green",
+  http: "magenta",
+  debug: "white",
+};
+
+addColors(colors);
 
 const createLogger = (importMetaUrl: string) =>
   createWinstonLogger({
     level: "http",
+    levels,
     format: format.combine(
       process.env.NODE_ENV !== "production"
         ? format.colorize({ all: true })
@@ -27,7 +47,18 @@ const createLogger = (importMetaUrl: string) =>
 
 const skip = (req: IncomingMessage) => {
   return (
-    (req.method === "GET" && req.url === "/ping") ||
+    (req.method === "POST" && req.url?.includes("api/ping")) ||
+    (req.method === "GET" && req.url?.endsWith(".svg")) ||
+    (req.method === "GET" && req.url?.endsWith(".ts")) ||
+    (req.method === "GET" && req.url?.endsWith(".tsx")) ||
+    (req.method === "GET" && req.url?.endsWith(".css")) ||
+    (req.method === "GET" && req.url?.endsWith(".js")) ||
+    (req.method === "GET" && req.url?.endsWith(".mjs")) ||
+    (req.method === "GET" && req.url?.endsWith(".svg")) ||
+    (req.method === "GET" && req.url?.endsWith(".png")) ||
+    (req.method === "GET" && req.url?.endsWith(".jpg")) ||
+    (req.method === "GET" && req.url?.endsWith(".ico")) ||
+    (req.method === "GET" && req.url?.endsWith(".woff")) ||
     (req.method === "GET" && req.url === "/") || //health check
     req.method === "OPTION" ||
     req.method === "OPTIONS"
@@ -53,8 +84,8 @@ morgan.token("body", (req: any) => {
   return body;
 });
 
-const textFormat = () =>
-  ":remote-addr [:staff] :method :url :status :response-time ms";
+const textFormat: FormatFn = (tokens, req, res) =>
+  `${tokens["remote-addr"](req, res)} [${tokens["staff"](req, res) || ""}] ${tokens["method"](req, res)} ${tokens["url"](req, res)} ${tokens["status"](req, res)} ${tokens["response-time"](req, res)} ms`;
 
 const textStream = {
   // Use the http severity

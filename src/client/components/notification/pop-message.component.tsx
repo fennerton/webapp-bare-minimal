@@ -29,7 +29,7 @@ const content = (
         colors={color}
         trailColor={"#ffffff"}
       >
-        {() => <i className={`${iconClass} text-lg`} style={{ color }}></i>}
+        {() => <i className={`${iconClass} text-[16px]`} style={{ color }} />}
       </CountdownCircleTimer>
       <span>{msg.content}</span>
     </div>
@@ -62,37 +62,38 @@ const messageConfig = (
   };
 };
 
-export const popMessage = {
-  success: (msg: MessageProperty | string) =>
-    message.open(
-      messageConfig(
-        regulateMessage(msg),
-        "ri-checkbox-circle-fill",
-        colors.green["500"],
-      ),
+export const popError = (msg: MessageProperty | string) =>
+  message.open(
+    messageConfig(
+      regulateMessage(msg),
+      "ri-error-warning-fill",
+      colors.red["500"],
     ),
-  info: (msg: MessageProperty | string) =>
-    message.open(
-      messageConfig(
-        regulateMessage(msg),
-        "ri-information-fill",
-        colors.blue["500"],
-      ),
+  );
+
+export const popSuccess = (msg: MessageProperty | string) =>
+  message.open(
+    messageConfig(
+      regulateMessage(msg),
+      "ri-checkbox-circle-fill",
+      colors.green["500"],
     ),
-  warning: (msg: MessageProperty | string) =>
-    message.open(
-      messageConfig(
-        regulateMessage(msg),
-        "ri-alarm-warning-fill",
-        colors.orange["500"],
-      ),
+  );
+
+export const popWarning = (msg: MessageProperty | string) =>
+  message.open(
+    messageConfig(
+      regulateMessage(msg),
+      "ri-alarm-warning-fill",
+      colors.orange["500"],
     ),
-  error: (msg: MessageProperty | string) =>
-    message.open(
-      messageConfig(
-        regulateMessage(msg),
-        "ri-error-warning-fill",
-        colors.red["500"],
-      ),
+  );
+
+export const popInfo = (msg: MessageProperty | string) =>
+  message.open(
+    messageConfig(
+      regulateMessage(msg),
+      "ri-information-fill",
+      colors.blue["500"],
     ),
-};
+  );

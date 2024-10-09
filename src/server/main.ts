@@ -12,6 +12,7 @@ import { loginVerify } from "./services/authentication.service";
 import { Authentication } from "../interfaces/authentication";
 import authenticationRoute from "./routes/authentication.route";
 import { createLogger, morganMiddleware } from "./middleware/logger.middleware";
+import routings from "./routes/routings";
 
 dotenv.config();
 
@@ -47,7 +48,7 @@ passport.deserializeUser<Authentication>((user, done) => {
   done(null, user);
 });
 
-app.use(authenticationRoute);
+app.use("/api", routings);
 
 const logger = createLogger(import.meta.url);
 

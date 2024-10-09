@@ -24,7 +24,7 @@ function App() {
   const [authenticated, setAuthenticated] = useState(false);
 
   useEffect(() => {
-    //liveCheck();
+    liveCheck();
   }, [location]);
 
   const liveCheck = async () => {

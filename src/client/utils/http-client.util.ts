@@ -4,6 +4,7 @@ import { Endpoint } from "../constants/endpoints.enum";
 
 const httpClient = axios.create({
   withCredentials: true,
+  baseURL: "/api",
 });
 
 httpClient.interceptors.response.use(

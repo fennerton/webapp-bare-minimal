@@ -97,9 +97,7 @@ export const SideNavigation = () => {
         >
           <h2 className="font-bold text-2xl">
             Logo{" "}
-            <span className="bg-[#f84525] text-white px-2 rounded-md">
-              Here
-            </span>
+            <span className="bg-accent text-white px-2 rounded-md">Here</span>
           </h2>
         </Link>
         <ul className="mt-4">

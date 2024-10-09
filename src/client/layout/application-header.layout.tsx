@@ -24,13 +24,17 @@ export const ApplicationHeader = () => {
   return (
     <>
       {user && (
-        <div className="py-2 px-6 bg-primary-foreground flex items-center shadow-md shadow-black/5 sticky top-0 left-0 z-30">
+        <div className="py-1 pl-1 pr-6 bg-primary-foreground flex items-center shadow-md shadow-black/5 sticky top-0 left-0 z-30">
           <button
             type="button"
             className="text-lg text-gray-900 font-semibold sidebar-toggle bg-transparent"
             onClick={toggleSider}
           >
-            <i className="ri-menu-line"></i>
+            <i
+              className={
+                displaySideNav ? "ri-skip-left-line" : "ri-skip-right-line"
+              }
+            ></i>
           </button>
 
           <ul className="ml-auto flex items-center">

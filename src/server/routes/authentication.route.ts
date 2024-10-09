@@ -4,7 +4,7 @@ import { authRequired } from "../middleware/auth-required.middleware";
 
 const router = express.Router();
 
-router.get("/ping", authRequired, async (_, res) => {
+router.post("/ping", authRequired, async (_, res) => {
   res.sendStatus(200);
 });
 

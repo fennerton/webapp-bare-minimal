@@ -11,7 +11,7 @@ import {
   Authentication,
   LoginCredential,
 } from "../../../interfaces/authentication";
-import { popMessage } from "../../components/pop-message.component";
+import { popError } from "../../components/notification/pop-message.component";
 import { useBoundStore } from "../../states/bound.store";
 
 const { Title } = Typography;
@@ -47,11 +47,11 @@ const Login = () => {
       if (err instanceof AxiosError) {
         if (err.response) {
           const { message } = err.response.data;
-          popMessage.error({ content: message, duration: 0 });
+          popError({ content: message, duration: 0 });
         }
       } else {
         console.log(err);
-        popMessage.error("Unknown Error During Login!");
+        popError("Unknown Error During Login!");
       }
     } finally {
       setIsSubmitting(false);

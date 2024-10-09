@@ -24,7 +24,7 @@ export const ApplicationContent = () => {
   };
 
   return (
-    <div className={"p-6 flex-grow-[1]"}>
+    <div className={"p-3 flex-grow-[1]"}>
       <Routes>
         {privateRoutes.map(constructRoute)}
         <Route path="*" element={<NotFoundPage />} />

@@ -1,6 +1,7 @@
 import React, { ReactElement } from "react";
 import Login from "../pages/authentication/login.page";
 import ResetPassword from "../pages/authentication/reset-password.page";
+import { EmailTemplateListPage } from "../pages/template-management/email-template-list.page";
 
 export type AppRoute = {
   path: string;
@@ -18,6 +19,30 @@ export const privateRoutes: AppRoute[] = [
   {
     path: "/",
     component: <></>,
+  },
+  {
+    path: "/template",
+    component: <></>,
+    children: [
+      {
+        path: "email",
+        component: <EmailTemplateListPage />,
+        sideNav: {
+          group: "Manage Template",
+          displayName: "Email",
+          icon: <i className="ri-mail-line"></i>,
+        },
+      },
+      {
+        path: "sms",
+        component: <></>,
+        sideNav: {
+          group: "Manage Template",
+          displayName: "SMS",
+          icon: <i className="ri-message-line"></i>,
+        },
+      },
+    ],
   },
 ];
 
