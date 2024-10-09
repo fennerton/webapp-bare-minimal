@@ -1,93 +1,63 @@
 import express from "express";
 import ViteExpress from "vite-express";
-import {isError, mongoose} from 'bridge-mongo';
+import * as mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import {DB} from './db-schemas';
 import bodyParser from 'body-parser';
-import {SES} from "@aws-sdk/client-ses";
+import session from 'express-session';
+import passport from 'passport';
+import {Strategy} from 'passport-local';
+import MongoStore from "connect-mongo";
+
+import { loginVerify} from "./services/authentication.service";
+import {Authentication} from "../interfaces/authentication";
+import authenticationRoute from "./routes/authentication.route";
+import logger from "./middleware/logger.middleware";
 
 dotenv.config();
 
 const app = express();
 
-const jsonParser = bodyParser.json()
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
 
-const ses = new SES({
-    region: "us-east-1",
-    apiVersion: '2018-09-05',
+app.use(
+  session({
+      secret: process.env.JSON_SIGNATURE || "",
+      resave: true,
+      saveUninitialized: true,
+      rolling: true, // Extend session expiration on each request
+      cookie: {
+          maxAge: 60 * 60 * 1000, // 1 hour
+      },
+      store: MongoStore.create({ mongoUrl: process.env.DB_CONNECTION_STRING }),
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+passport.use('local', new Strategy({ usernameField: 'login' }, loginVerify));
+
+passport.serializeUser((user, done) => {
+  done(null, user);
 });
 
-app.get("/email-template", async (_, res) => {
-    // get all templates from the database
-    const templates = await DB.emailtemplate.find({});
-    res.send(templates);
+passport.deserializeUser<Authentication>((user, done) => {
+  done(null, user);
 });
 
-app.post("/email-template", jsonParser, async (req, res) => {
-    // create a new template in the database
-    const {name, html, design} = req.body;
-    const newTemplate = await DB.emailtemplate.create({name, html, design});
-    res.send({id: newTemplate._id});
-});
+app.use(authenticationRoute);
 
-app.put("/email-template/:id", jsonParser, async (req, res) => {
-    // create a new template in the database
-    const {name, html, design} = req.body;
-    const {id} = req.params;
-    await DB.emailtemplate.findByIdAndUpdate(id, {name, html, design});
-    res.send(200);
-});
-
-app.post("/send-email", jsonParser, async (req, res) => {
-    const {templateId, to, firstName, lastName} = req.body;
-    const templateQuery = await DB.emailtemplate.findOne({_id: templateId});
-    if (isError(templateQuery)) {
-        res.status(404).send("Template not found");
-        return;
-    }
-    const {name, html} = templateQuery;
-
-    const finalHtml = html.replace("{{first_name}}", firstName).replace("{{last_name}}", lastName);
-    const params = {
-        Destination: {
-            ToAddresses: [to]
-        },
-        Message: {
-            Body: {
-                Html: {
-                    Charset: "UTF-8",
-                    Data: finalHtml
-                }
-            },
-            Subject: {
-                Charset: "UTF-8",
-                Data: name
-            }
-        },
-        Source: 'system@biostation-app.com',
-    };
-    ses.sendEmail(params, (err: { stack: any; }, data: any) => {
-        if (err) {
-            console.log(err, err.stack);
-            res.status(500).send("Failed to send email");
-        } else {
-            res.send("Email sent");
-        }
-    });
-});
-
-const connectDB = async () => {
+(async () => {
     try {
         await mongoose.connect(process.env.DB_CONNECTION_STRING as string);
-        console.log('MongoDB connected...');
+      logger.warn('MongoDB connected...');
     } catch (err: any) {
         console.error(err.message);
         process.exit(1);
     }
-};
-
-connectDB();
+})();
 
 ViteExpress.listen(app, 3000, () =>
-    console.log("Server is listening on port 3000..."),
+  logger.info("Server is listening on port 3000..."),
 );
