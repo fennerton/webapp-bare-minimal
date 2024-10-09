@@ -1,7 +1,13 @@
-import { create } from 'zustand';
-import { AuthenticationSlice, createAuthenticationSlice } from './authentication.slice';
-import { createSideNavDisplaySlice, SideNavDisplaySlice } from './side-nav-display.slice';
-import { devtools, persist } from 'zustand/middleware';
+import { create } from "zustand";
+import {
+  AuthenticationSlice,
+  createAuthenticationSlice,
+} from "./authentication.slice";
+import {
+  createSideNavDisplaySlice,
+  SideNavDisplaySlice,
+} from "./side-nav-display.slice";
+import { devtools, persist } from "zustand/middleware";
 
 export const useBoundStore = create<
   AuthenticationSlice & SideNavDisplaySlice
@@ -13,9 +19,9 @@ export const useBoundStore = create<
         ...createSideNavDisplaySlice(...a),
       }),
       {
-        name: 'persisted-application-state',
+        name: "persisted-application-state",
         partialize: (state) => ({ user: state.user }),
-      }
-    )
-  )
+      },
+    ),
+  ),
 );

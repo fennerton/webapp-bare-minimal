@@ -1,5 +1,5 @@
-import {model, Schema} from "mongoose";
-import {ApplicationRight, IApplicationRight} from "./application-right.model";
+import { model, Schema } from "mongoose";
+import { ApplicationRight, IApplicationRight } from "./application-right.model";
 
 export interface IApplicationRole {
   name: string;
@@ -7,7 +7,7 @@ export interface IApplicationRole {
   rights: string[];
   canCUDRight: boolean;
 
-  associatedRights: IApplicationRight[]
+  associatedRights: IApplicationRight[];
 }
 
 const applicationRoleSchema = new Schema<IApplicationRole>({
@@ -15,7 +15,7 @@ const applicationRoleSchema = new Schema<IApplicationRole>({
     type: String,
     trim: true,
     unique: true,
-    required: [true, 'Role Name must not be null'],
+    required: [true, "Role Name must not be null"],
   },
   devOnly: {
     // role with devOnly true will not be migrated into production
@@ -31,11 +31,14 @@ const applicationRoleSchema = new Schema<IApplicationRole>({
   },
 });
 
-applicationRoleSchema.virtual('associatedRights', {
+applicationRoleSchema.virtual("associatedRights", {
   ref: ApplicationRight,
-  localField: 'rights',
-  foreignField: 'name',
+  localField: "rights",
+  foreignField: "name",
   justOne: true,
 });
 
-export const ApplicationRole = model<IApplicationRole>('application-role', applicationRoleSchema);
+export const ApplicationRole = model<IApplicationRole>(
+  "application-role",
+  applicationRoleSchema,
+);

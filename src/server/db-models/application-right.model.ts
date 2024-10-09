@@ -1,9 +1,9 @@
-import {model, Schema} from "mongoose";
+import { model, Schema } from "mongoose";
 
 export interface IApplicationRight {
-  name: string,
-  description: string,
-  group: string,
+  name: string;
+  description: string;
+  group: string;
 }
 
 const applicationRightSchema = new Schema<IApplicationRight>({
@@ -11,10 +11,13 @@ const applicationRightSchema = new Schema<IApplicationRight>({
     type: String,
     trim: true,
     unique: true,
-    required: [true, 'Right Name must not be null'],
+    required: [true, "Right Name must not be null"],
   },
   description: String,
   group: String,
 });
 
-export const ApplicationRight =  model<IApplicationRight>('application-right', applicationRightSchema);
+export const ApplicationRight = model<IApplicationRight>(
+  "application-right",
+  applicationRightSchema,
+);

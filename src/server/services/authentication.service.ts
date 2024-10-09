@@ -1,23 +1,23 @@
-import {Staff} from "../db-models/staff.model";
-import {ApplicationRight} from "../db-models/application-right.model";
-import {Authentication} from "../../interfaces/authentication";
-import {VerifyFunction} from "passport-local";
+import { Staff } from "../db-models/staff.model";
+import { ApplicationRight } from "../db-models/application-right.model";
+import { Authentication } from "../../interfaces/authentication";
+import { VerifyFunction } from "passport-local";
 
 const WRONG_USERNAME_PASSWORD = {
   status: 401,
-  message: 'Invalid staff ID / email / password',
+  message: "Invalid staff ID / email / password",
 };
 
 const INIT_NOT_DONE = {
   status: 402,
-  message: 'Please reset your password for the first time login',
+  message: "Please reset your password for the first time login",
 };
 
 export const loginVerify: VerifyFunction = async (login, password, done) => {
   try {
     const user = await Staff.findOne({
       $or: [{ staffId: login }, { email: login }],
-    }).populate('roleDetail');
+    }).populate("roleDetail");
 
     if (!user) {
       return done(null, false, WRONG_USERNAME_PASSWORD);
@@ -34,7 +34,11 @@ export const loginVerify: VerifyFunction = async (login, password, done) => {
     let userRights = userRoleDetail.associatedRights;
 
     if (userRoleDetail.devOnly) {
-      const allRights = await ApplicationRight.find({}, {}, { lean: true }).lean();
+      const allRights = await ApplicationRight.find(
+        {},
+        {},
+        { lean: true },
+      ).lean();
       userRights = allRights.map((r) => r.name);
     }
 
@@ -43,7 +47,7 @@ export const loginVerify: VerifyFunction = async (login, password, done) => {
 
     const userObj: Authentication = {
       staffId: user.staffId,
-      name: user.firstName + ' ' + user.lastName,
+      name: user.firstName + " " + user.lastName,
       email: user.email,
       avatar: user.avatar,
       role: { ...userRoleDetail, rights: userRights },

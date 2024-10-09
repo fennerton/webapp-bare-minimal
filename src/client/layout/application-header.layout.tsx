@@ -1,8 +1,8 @@
-import { Dropdown, message, Spin } from 'antd';
-import httpClient from '../utils/http-client.util';
-import { Endpoint } from '../constants/endpoints.enum';
-import React, { useState } from 'react';
-import { useBoundStore } from '../states/bound.store';
+import { Dropdown, message, Spin } from "antd";
+import httpClient from "../utils/http-client.util";
+import { Endpoint } from "../constants/endpoints.enum";
+import React, { useState } from "react";
+import { useBoundStore } from "../states/bound.store";
 
 export const ApplicationHeader = () => {
   const [spinning, setSpinning] = useState(false);
@@ -36,39 +36,39 @@ export const ApplicationHeader = () => {
           <ul className="ml-auto flex items-center">
             <li className="dropdown ml-3">
               <Dropdown
-                trigger={['click']}
+                trigger={["click"]}
                 menu={{
                   items: [
                     {
-                      key: '0',
+                      key: "0",
                       label: (
                         <span
                           role="menuitem"
-                          title={'click to copy'}
+                          title={"click to copy"}
                           className="flex items-center justify-between text-[14px] py-1.5 px-4"
                         >
                           <i className="ri-pass-valid-line me-3"></i>
                           <span>{user.staffId}</span>
                         </span>
                       ),
-                      onClick: () => copyValue('staff id', user.staffId),
+                      onClick: () => copyValue("staff id", user.staffId),
                     },
                     {
-                      key: '1',
+                      key: "1",
                       label: (
                         <span
                           role="menuitem"
-                          title={'click to copy'}
+                          title={"click to copy"}
                           className="flex items-center justify-between text-[14px] py-1.5 px-4"
                         >
                           <i className="ri-mail-line me-3"></i>
                           <span>{user.email}</span>
                         </span>
                       ),
-                      onClick: () => copyValue('user email', user.email),
+                      onClick: () => copyValue("user email", user.email),
                     },
                     {
-                      key: '2',
+                      key: "2",
                       label: (
                         <span
                           role="menuitem"
@@ -85,7 +85,7 @@ export const ApplicationHeader = () => {
                           await httpClient.post(Endpoint.LOGOUT);
                         } finally {
                           setTimeout(() => {
-                            userLogout('/login');
+                            userLogout("/login");
                           }, 2000);
                         }
                       },
@@ -93,7 +93,10 @@ export const ApplicationHeader = () => {
                   ],
                 }}
               >
-                <button type="button" className="dropdown-toggle flex items-center bg-transparent">
+                <button
+                  type="button"
+                  className="dropdown-toggle flex items-center bg-transparent"
+                >
                   <div className="flex-shrink-0 w-10 h-10 relative">
                     <div className="p-1 rounded-full focus:outline-none focus:ring">
                       <img
@@ -106,7 +109,9 @@ export const ApplicationHeader = () => {
                     </div>
                   </div>
                   <div className="p-2 md:block text-left">
-                    <h2 className="text-sm font-semibold text-gray-800">{user.name}</h2>
+                    <h2 className="text-sm font-semibold text-gray-800">
+                      {user.name}
+                    </h2>
                     <p className="text-xs text-gray-500">{user.role.name}</p>
                   </div>
                 </button>

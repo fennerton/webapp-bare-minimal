@@ -14,7 +14,7 @@ export interface ApplicationRole {
 }
 
 export interface ApplicationRight {
-  name: string,
-  description: string,
-  group: string,
+  name: string;
+  description: string;
+  group: string;
 }

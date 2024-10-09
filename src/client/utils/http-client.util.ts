@@ -1,6 +1,6 @@
-import axios from 'axios';
-import { useBoundStore } from '../states/bound.store';
-import {Endpoint} from "../constants/endpoints.enum";
+import axios from "axios";
+import { useBoundStore } from "../states/bound.store";
+import { Endpoint } from "../constants/endpoints.enum";
 
 const httpClient = axios.create({
   withCredentials: true,
@@ -20,10 +20,10 @@ httpClient.interceptors.response.use(
       if (response) {
         if (response.status === 401) {
           if (response.config.url !== Endpoint.LOGIN) {
-            userLogout('/login');
+            userLogout("/login");
           }
         } else if (response.status === 402) {
-          userLogout('/first-time-login');
+          userLogout("/first-time-login");
         } else if (response.status === 500) {
           convertedError = new Error(response.data);
         }
@@ -32,7 +32,7 @@ httpClient.interceptors.response.use(
     } catch (error) {
       return Promise.reject(error);
     }
-  }
+  },
 );
 
 export default httpClient;

@@ -1,5 +1,5 @@
-import { StateCreator } from 'zustand';
-import { Authentication as User } from '../../interfaces/authentication';
+import { StateCreator } from "zustand";
+import { Authentication as User } from "../../interfaces/authentication";
 
 export interface AuthenticationSlice {
   user: User | null;
@@ -11,17 +11,18 @@ export interface AuthenticationSlice {
 
 export const createAuthenticationSlice: StateCreator<
   AuthenticationSlice,
-  [['zustand/devtools', never]],
+  [["zustand/devtools", never]],
   [],
   AuthenticationSlice
 > = (set, getState) => ({
   user: null,
   proactiveLoggingOut: false,
-  userLogin: (user: User) => set({ user }, false, 'userLogin'),
-  setProactiveLoggingOut: (loggingOut) => set({ proactiveLoggingOut: loggingOut }, false, 'setLoggingOut'),
+  userLogin: (user: User) => set({ user }, false, "userLogin"),
+  setProactiveLoggingOut: (loggingOut) =>
+    set({ proactiveLoggingOut: loggingOut }, false, "setLoggingOut"),
   userLogout: (nextUrl: string) => {
     getState().setProactiveLoggingOut(false);
-    set({ user: null }, false, 'userLogout');
+    set({ user: null }, false, "userLogout");
     window.location.href = nextUrl;
   },
 });

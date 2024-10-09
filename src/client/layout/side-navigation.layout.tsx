@@ -1,7 +1,7 @@
-import { Link } from 'react-router-dom';
-import { ReactElement, useEffect, useState } from 'react';
-import { privateRoutes, AppRoute } from "../routes/route.config";
-import { useBoundStore } from '../states/bound.store';
+import { Link } from "react-router-dom";
+import { ReactElement, useEffect, useState } from "react";
+import { AppRoute, privateRoutes } from "../routes/route.config";
+import { useBoundStore } from "../states/bound.store";
 
 type SideNavGroup = {
   name: string;
@@ -28,7 +28,10 @@ export const SideNavigation = () => {
         if (canAccess()) {
           allSideNavRoutes.push({
             ...appRoute,
-            path: parentUrl + (!parentUrl.length || parentUrl.endsWith('/') ? '' : '/') + appRoute.path,
+            path:
+              parentUrl +
+              (!parentUrl.length || parentUrl.endsWith("/") ? "" : "/") +
+              appRoute.path,
           });
         }
       }
@@ -36,7 +39,7 @@ export const SideNavigation = () => {
         appRoute.children.forEach((c) => collectSideNav(c, appRoute.path));
       }
     };
-    privateRoutes.forEach((ap) => collectSideNav(ap, ''));
+    privateRoutes.forEach((ap) => collectSideNav(ap, ""));
     const groups: SideNavGroup[] = [];
     allSideNavRoutes.forEach((r) => {
       const sideNav = r.sideNav;
@@ -51,7 +54,9 @@ export const SideNavigation = () => {
         } else {
           groups.push({
             name: sideNav.group,
-            items: [{ name: sideNav.displayName, icon: sideNav.icon, path: r.path }],
+            items: [
+              { name: sideNav.displayName, icon: sideNav.icon, path: r.path },
+            ],
           });
         }
       }
@@ -84,14 +89,22 @@ export const SideNavigation = () => {
   return (
     <>
       <div
-        className={`fixed left-0 top-0 w-64 h-full bg-primary-foreground p-4 z-50 transition-transform overflow-y-auto ${sideNavDisplay ? '' : 'hidden'}`}
+        className={`fixed left-0 top-0 w-64 h-full bg-primary-foreground p-4 z-50 transition-transform overflow-y-auto ${sideNavDisplay ? "" : "hidden"}`}
       >
-        <Link to="/" className="flex items-center pb-4 border-b border-b-gray-800">
+        <Link
+          to="/"
+          className="flex items-center pb-4 border-b border-b-gray-800"
+        >
           <h2 className="font-bold text-2xl">
-            Logo <span className="bg-[#f84525] text-white px-2 rounded-md">Here</span>
+            Logo{" "}
+            <span className="bg-[#f84525] text-white px-2 rounded-md">
+              Here
+            </span>
           </h2>
         </Link>
-        <ul className="mt-4">{sideNavGroups.map((g, i) => NavSection(g, i))}</ul>
+        <ul className="mt-4">
+          {sideNavGroups.map((g, i) => NavSection(g, i))}
+        </ul>
       </div>
       <div className="fixed top-0 left-0 w-full h-full bg-black/50 z-40 md:hidden sidebar-overlay"></div>
     </>

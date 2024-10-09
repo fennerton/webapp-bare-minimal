@@ -1,4 +1,4 @@
-import {RequestHandler} from "express-serve-static-core";
+import { RequestHandler } from "express-serve-static-core";
 
 export const authRequired: RequestHandler = async (req, res, next) => {
   if (req.isAuthenticated()) {

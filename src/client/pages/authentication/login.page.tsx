@@ -1,17 +1,20 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from "react";
 
-import {Button, Form, Input, Typography} from 'antd';
+import { Button, Form, Input, Typography } from "antd";
 
-import {LockOutlined, UserOutlined} from '@ant-design/icons';
-import {useNavigate} from 'react-router-dom';
-import httpClient from '../../utils/http-client.util';
-import {Endpoint} from '../../constants/endpoints.enum';
-import {AxiosError} from 'axios';
-import {LoginCredential, Authentication} from '../../../interfaces/authentication';
-import {popMessage} from '../../components/pop-message.component';
-import {useBoundStore} from '../../states/bound.store';
+import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
+import httpClient from "../../utils/http-client.util";
+import { Endpoint } from "../../constants/endpoints.enum";
+import { AxiosError } from "axios";
+import {
+  Authentication,
+  LoginCredential,
+} from "../../../interfaces/authentication";
+import { popMessage } from "../../components/pop-message.component";
+import { useBoundStore } from "../../states/bound.store";
 
-const {Title} = Typography;
+const { Title } = Typography;
 
 const Login = () => {
   const [submitting, setIsSubmitting] = useState(false);
@@ -23,27 +26,32 @@ const Login = () => {
   const [loginForm] = Form.useForm<LoginCredential>();
 
   const onFieldsChange = async () => {
-    const hasErrors = loginForm.getFieldsError().some(({errors}) => errors.length);
+    const hasErrors = loginForm
+      .getFieldsError()
+      .some(({ errors }) => errors.length);
     setFormError(hasErrors);
   };
 
   const handleSubmit = async (loginCredential: LoginCredential) => {
     setIsSubmitting(true);
     try {
-      const loginAttempt = await httpClient.post<Authentication>(Endpoint.LOGIN, loginCredential);
+      const loginAttempt = await httpClient.post<Authentication>(
+        Endpoint.LOGIN,
+        loginCredential,
+      );
       if (loginAttempt.status === 200) {
         userLogin(loginAttempt.data);
-        navigate('/');
+        navigate("/");
       }
     } catch (err) {
       if (err instanceof AxiosError) {
         if (err.response) {
-          const {message} = err.response.data;
-          popMessage.error({content: message, duration: 0});
+          const { message } = err.response.data;
+          popMessage.error({ content: message, duration: 0 });
         }
       } else {
         console.log(err);
-        popMessage.error('Unknown Error During Login!');
+        popMessage.error("Unknown Error During Login!");
       }
     } finally {
       setIsSubmitting(false);
@@ -52,14 +60,18 @@ const Login = () => {
 
   useEffect(() => {
     if (user) {
-      navigate('/');
+      navigate("/");
     }
   }, []);
 
   return (
-    <section className={'h-lvh flex items-center justify-center'}>
-      <div className={'rounded-xl overflow-hidden shadow-xl px-10 py-5 text-center backdrop-blur-sm'}>
-        <div className={'mb-4'}>
+    <section className={"h-lvh flex items-center justify-center"}>
+      <div
+        className={
+          "rounded-xl overflow-hidden shadow-xl px-10 py-5 text-center backdrop-blur-sm"
+        }
+      >
+        <div className={"mb-4"}>
           <Title level={2}>Sign in</Title>
         </div>
         <Form
@@ -68,39 +80,54 @@ const Login = () => {
             remember: true,
           }}
           onFinish={handleSubmit}
-          className={'w-[400px]'}
+          className={"w-[400px]"}
           layout="vertical"
           requiredMark="optional"
           onFieldsChange={onFieldsChange}
-          autoComplete={'off'}
+          autoComplete={"off"}
         >
           <Form.Item
             name="login"
             rules={[
               {
                 required: true,
-                message: 'Email or Staff ID is required',
+                message: "Email or Staff ID is required",
               },
             ]}
           >
-            <Input className={'bg-white'} prefix={<UserOutlined/>} placeholder="Email or Staff ID"/>
+            <Input
+              className={"bg-white"}
+              prefix={<UserOutlined />}
+              placeholder="Email or Staff ID"
+            />
           </Form.Item>
           <Form.Item
             name="password"
             rules={[
               {
                 required: true,
-                message: 'Password is required',
+                message: "Password is required",
               },
             ]}
           >
-            <Input.Password className={'bg-white'} prefix={<LockOutlined/>} type="password" placeholder="Password"/>
+            <Input.Password
+              className={"bg-white"}
+              prefix={<LockOutlined />}
+              type="password"
+              placeholder="Password"
+            />
           </Form.Item>
           {/*<Form.Item className={'text-right m-1'}>*/}
           {/*  <Typography.Link href={'/password-change'}>Need to reset password?</Typography.Link>*/}
           {/*</Form.Item>*/}
           <Form.Item>
-            <Button type="primary" htmlType="submit" block loading={submitting} disabled={formError}>
+            <Button
+              type="primary"
+              htmlType="submit"
+              block
+              loading={submitting}
+              disabled={formError}
+            >
               Sign In
             </Button>
           </Form.Item>
@@ -108,6 +135,6 @@ const Login = () => {
       </div>
     </section>
   );
-}
+};
 
 export default Login;

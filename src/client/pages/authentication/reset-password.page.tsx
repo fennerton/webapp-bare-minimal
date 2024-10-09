@@ -1,5 +1,5 @@
 type Prop = {
-  type: 'sendLink' | 'doReset';
+  type: "sendLink" | "doReset";
 };
 const ResetPasswordPage = ({ type }: Prop) => {
   return <>hello</>;

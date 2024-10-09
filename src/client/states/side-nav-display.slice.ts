@@ -1,4 +1,4 @@
-import { StateCreator } from 'zustand';
+import { StateCreator } from "zustand";
 
 export interface SideNavDisplaySlice {
   displaySideNav: boolean;
@@ -7,10 +7,11 @@ export interface SideNavDisplaySlice {
 
 export const createSideNavDisplaySlice: StateCreator<
   SideNavDisplaySlice,
-  [['zustand/devtools', never]],
+  [["zustand/devtools", never]],
   [],
   SideNavDisplaySlice
 > = (set) => ({
   displaySideNav: true,
-  toggleSideNav: (displaySideNav: boolean) => set({ displaySideNav }, false, 'toggleSideNav'),
+  toggleSideNav: (displaySideNav: boolean) =>
+    set({ displaySideNav }, false, "toggleSideNav"),
 });

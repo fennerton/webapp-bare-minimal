@@ -1,7 +1,10 @@
-import type * as React from 'react';
-import { message } from 'antd';
-import { ColorFormat, CountdownCircleTimer } from 'react-countdown-circle-timer';
-import colors from 'tailwindcss/colors';
+import type * as React from "react";
+import { message } from "antd";
+import {
+  ColorFormat,
+  CountdownCircleTimer,
+} from "react-countdown-circle-timer";
+import colors from "tailwindcss/colors";
 
 export interface MessageProperty {
   content: React.ReactNode;
@@ -11,7 +14,11 @@ export interface MessageProperty {
 
 const defaultMessageDuration = 20;
 
-const content = (msg: MessageProperty, iconClass: string, color: ColorFormat) => {
+const content = (
+  msg: MessageProperty,
+  iconClass: string,
+  color: ColorFormat,
+) => {
   return (
     <div className="flex items-center gap-2">
       <CountdownCircleTimer
@@ -20,7 +27,7 @@ const content = (msg: MessageProperty, iconClass: string, color: ColorFormat) =>
         size={20}
         strokeWidth={2}
         colors={color}
-        trailColor={'#ffffff'}
+        trailColor={"#ffffff"}
       >
         {() => <i className={`${iconClass} text-lg`} style={{ color }}></i>}
       </CountdownCircleTimer>
@@ -30,7 +37,7 @@ const content = (msg: MessageProperty, iconClass: string, color: ColorFormat) =>
 };
 
 const regulateMessage = (msg: MessageProperty | string) => {
-  if (typeof msg === 'string') {
+  if (typeof msg === "string") {
     return {
       content: msg,
     } as MessageProperty;
@@ -39,7 +46,11 @@ const regulateMessage = (msg: MessageProperty | string) => {
   }
 };
 
-const messageConfig = (msg: MessageProperty | string, iconClass: string, color: ColorFormat) => {
+const messageConfig = (
+  msg: MessageProperty | string,
+  iconClass: string,
+  color: ColorFormat,
+) => {
   const msgObj = regulateMessage(msg);
   const onClose = msgObj.onCountdownEnd ? msgObj.onCountdownEnd : undefined;
 
@@ -53,11 +64,35 @@ const messageConfig = (msg: MessageProperty | string, iconClass: string, color: 
 
 export const popMessage = {
   success: (msg: MessageProperty | string) =>
-    message.open(messageConfig(regulateMessage(msg), 'ri-checkbox-circle-fill', colors.green['500'])),
+    message.open(
+      messageConfig(
+        regulateMessage(msg),
+        "ri-checkbox-circle-fill",
+        colors.green["500"],
+      ),
+    ),
   info: (msg: MessageProperty | string) =>
-    message.open(messageConfig(regulateMessage(msg), 'ri-information-fill', colors.blue['500'])),
+    message.open(
+      messageConfig(
+        regulateMessage(msg),
+        "ri-information-fill",
+        colors.blue["500"],
+      ),
+    ),
   warning: (msg: MessageProperty | string) =>
-    message.open(messageConfig(regulateMessage(msg), 'ri-alarm-warning-fill', colors.orange['500'])),
+    message.open(
+      messageConfig(
+        regulateMessage(msg),
+        "ri-alarm-warning-fill",
+        colors.orange["500"],
+      ),
+    ),
   error: (msg: MessageProperty | string) =>
-    message.open(messageConfig(regulateMessage(msg), 'ri-error-warning-fill', colors.red['500'])),
+    message.open(
+      messageConfig(
+        regulateMessage(msg),
+        "ri-error-warning-fill",
+        colors.red["500"],
+      ),
+    ),
 };
